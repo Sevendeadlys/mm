@@ -1,0 +1,16 @@
+
+CFLAGS=-Wall
+SOFLAGS=-Wall -fpic -shared -o libmm.so
+OBJECS=memlib.o csapp.o mm.o
+
+CC=gcc
+TARGETS=mm.so
+
+all:mm.a
+mm.a:$(OBJECS)
+	$(CC) $(SOFLAGS) $(OBJECS)
+$(OBJECS):%.o:%.c
+	$(CC) -c $(CFLAGS) $< -o $@ -lpthread
+.PHONY:clean
+clean:
+	rm -rf *.o *.so
