@@ -2,6 +2,11 @@
 
 static char *heap_listp;
 
+static void *extend_heap(size_t words);
+static void *coalesce(void* bp);
+void *find_fit(size_t size);
+void place(void *bp,size_t size);
+
 int mm_init(void)
 {
     if((heap_listp = mem_brk(4 * WSIZE)) == (void *)-1) return -1;
@@ -139,6 +144,10 @@ void place(void *bp,size_t size)
     }
     else
     {
-        
+        PUT(HDRP(bp),PACK(size,1));
+        PUT(FTRP(bp),PACK(size,1));
+        bp = NEXT_BLKP(bp);
+        PUT(HDRP(bp),PACK(asize,0));
+        PUT(FTRP(bp),PACK(asize,0));
     }
 }
